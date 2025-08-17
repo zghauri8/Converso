@@ -24,6 +24,13 @@ const CompanionsList = ({
   companions,
   classNames,
 }: CompanionsListProps) => {
+  const uniqueCompanions = companions
+    ? companions.filter(
+        (companion, index, self) =>
+          self.findIndex(c => c.id === companion.id) === index
+      )
+    : [];
+
   return (
     <article className={cn("companion-list", classNames)}>
       <h2 className="font-bold text-3xl">Recent Sessions</h2>
@@ -38,7 +45,7 @@ const CompanionsList = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {companions?.map(({ id, subject, name, topic, duration }) => (
+          {uniqueCompanions.map(({ id, subject, name, topic, duration }) => (
             <TableRow key={id}>
               <TableCell>
                 <Link href={`/companions/${id}`}>
